@@ -335,7 +335,7 @@ a {
   min-height: 581px;
   background-color: var(--white);
 
-  transition: transform 5000ms var(--animation-timing);
+  transition: transform 500ms var(--animation-timing);
 }
 
 .container {
