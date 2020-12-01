@@ -79,6 +79,7 @@
   --background-dark-grey: #2f303a;
   --background-light-grey: #f5f4fa;
   --clients: #afb1b8;
+  --animation-timing: cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 html {
@@ -162,9 +163,13 @@ a {
 
 .list-menu {
   display: flex;
+  align-items: center;
 }
 
 .item-menu {
+  display: flex;
+  align-items: center;
+  height: 80px;
 }
 
 .item-menu:not(:last-child) {
@@ -180,6 +185,17 @@ a {
   margin-left: 50px;
 }
 
+.link-contacts:hover .icon-contacts,
+.link-contacts:focus .icon-contacts {
+  fill: currentColor;
+}
+
+.icon-contacts {
+  fill: var(--black);
+  margin-right: 10px;
+  transition: fill 250ms var(--animation-timing);
+}
+
 .link-contacts {
   display: flex;
   align-items: center;
@@ -190,6 +206,7 @@ a {
   font-family: roboto;
   font-weight: 500;
   line-height: 1.17;
+  transition: color 250ms var(--animation-timing);
 }
 
 .link-contacts:hover,
@@ -197,32 +214,34 @@ a {
   color: var(--blue);
 }
 
-.icon-contacts {
-  fill: var(--black);
-  margin-right: 10px;
-}
-
-.link-contacts:hover .icon-contacts,
-.link-contacts:focus .icon-contacts {
-  fill: currentColor;
-}
-
 .link-menu {
   display: block;
   padding-top: 32px;
-  padding-bottom: 28px;
-
+  padding-bottom: 32px;
   color: var(--black);
   font-family: roboto;
   font-size: 14px;
   font-weight: 500;
   line-height: 1.17;
+  transition-duration: 250ms;
+  transition-timing-function: var(--animation-timing);
 }
 
 .link-studia {
+  position: relative;
   color: var(--blue);
+}
+
+.link-studia::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 100%;
+  height: 4px;
   border-bottom: 4px solid var(--blue);
   border-radius: 2px;
+  z-index: 55;
 }
 
 .link-menu:hover,
@@ -285,6 +304,32 @@ a {
   text-align: center;
   text-transform: uppercase;
   margin-bottom: 30px;
+}
+
+.backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.2);
+}
+
+.backdrop.is-hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.modal {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+
+  min-width: 528px;
+  min-height: 581px;
+
+  background-color: var(--white);
 }
 
 .container {
@@ -488,16 +533,19 @@ a {
 .list-team-link {
   display: flex;
   margin-top: 16px;
+  margin-right: -10px;
 }
 
 .item-team-link {
-  flex-basis: calc((100%-30px) / 4);
+  flex-basis: calc(100% / 4 - 10px);
   max-width: 44px;
   max-height: 44px;
+  margin-right: 10px;
 }
 
-.item-team-link:not(:last-child) {
-  margin-right: 10px;
+.icon-team-link {
+  fill: var(--clients);
+  transition: fill 250ms var(--animation-timing);
 }
 
 .link-icon {
@@ -507,6 +555,8 @@ a {
   width: 44px;
   height: 44px;
   border-radius: 50%;
+  transition-duration: 250ms;
+  transition-timing-function: var(--animation-timing);
 }
 
 .link-icon:hover,
@@ -519,10 +569,6 @@ a {
   fill: var(--white);
 }
 
-.icon-team-link {
-  fill: var(--clients);
-}
-
 .clients {
   padding-top: 94px;
   padding-bottom: 94px;
@@ -530,6 +576,7 @@ a {
 
 .icon-clients {
   fill: var(--clients);
+  transition: fill 250ms var(--animation-timing);
 }
 
 .clients-heading {
@@ -545,16 +592,14 @@ a {
 .list-clients {
   display: flex;
   flex-wrap: wrap;
+  margin-right: -30px;
 }
 
 .item-clients {
-  flex-basis: calc((100% - 150px) / 6);
+  flex-basis: calc(100% / 6 - 30px);
+  margin-right: 30px;
   max-width: 170px;
   max-height: 90px;
-}
-
-.item-clients:not(:last-child) {
-  margin-right: 30px;
 }
 
 .link-clients {
@@ -563,13 +608,14 @@ a {
   align-items: center;
   width: 170px;
   height: 90px;
-  border: 1px solid #afb1b8;
+  border: 1px solid var(--clients);
   border-radius: 4px;
+  transition: border-color 250ms var(--animation-timing);
 }
 
 .link-clients:hover,
 .link-clients:focus {
-  border: 1px solid var(--blue);
+  border-color: var(--blue);
 }
 
 .link-clients:hover .icon-clients,
@@ -611,6 +657,8 @@ a {
   height: 44px;
   border-radius: 50%;
   background-color: rgba(255, 255, 255, 0.1);
+  transition-duration: 250ms;
+  transition-timing-function: var(--animation-timing);
 }
 
 .link-icon-footer:hover,
@@ -647,6 +695,8 @@ a {
   line-height: 1.17;
   font-size: 14px;
   font-style: normal;
+  transition-duration: 250ms;
+  transition-timing-function: var(--animation-timing);
 }
 
 .footer-link-contacts:hover,
@@ -663,4 +713,14 @@ a {
   font-weight: 700;
   line-height: 1.67;
   font-size: 26px;
+}
+
+@keyframes changeIconColor {
+  0% {
+    fill: #afb1b8;
+  }
+
+  100% {
+    fill: var(--blue);
+  }
 }
